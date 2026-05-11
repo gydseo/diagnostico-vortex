@@ -864,15 +864,20 @@ function submitGate() {
     return;
   }
 
-  // ── TODO: Reemplaza esta sección con tu integración real ──
-  // Opciones: Formspree, EmailJS, Google Apps Script, Webhook de Make/n8n
-  // Ejemplo con Formspree:
-  // fetch('https://formspree.io/f/TU_ID', {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify({ name, email, phone: document.getElementById('gate-phone').value, score: calcScore(), answers })
-  // });
-  // ──────────────────────────────────────────────────────────
+  const phone = document.getElementById('gate-phone').value.trim();
+  const score = calcScore();
+
+  fetch('https://formspree.io/f/mykoogoo', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      nombre: name,
+      email: email,
+      whatsapp: phone,
+      score: score + '/100',
+      detalle: questions.map((q, i) => `${q.category}: ${answers[i] !== null ? q.options[answers[i]].label : 'Sin respuesta'}`).join(' | ')
+    })
+  });
 
   showResult(name);
 }
